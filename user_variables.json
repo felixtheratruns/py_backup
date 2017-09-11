@@ -1,0 +1,36 @@
+{
+    "remove": {
+        "regex": "s/[:|?\"]//g"
+    },
+    "base_paths": {
+        "origin_base": ".",
+        "other_copying_base": "."
+    },
+    "backup_folders": {
+        "origin": {
+            "path": "origin/", 
+            "path_type": "relative",
+            "destinations": [
+                "dest1",
+                "dest2",
+                "dest3",
+                "dest4"
+            ]
+        },
+        "other_copying": [
+            {
+               "src_path": "other_origin/", 
+               "src_path_type": "relative",
+               "dest_path": "other_folder/", 
+               "dest_path_type": "relative" 
+            },
+            {
+               "src_path": "other_origin/", 
+               "src_path_type": "relative",
+               "dest_path": "other_folder/", 
+               "dest_path_type": "relative" 
+            }
+        ],
+        "rsync_args": [ {"rsync_vars": "-auv"}, {"rsync_delete": "--delete-after"}, {"backup_script": "--write-batch=backupscript"}]
+    }
+}
