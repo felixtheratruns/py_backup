@@ -4,33 +4,30 @@
     },
     "base_paths": {
         "origin_base": ".",
-        "other_copying_base": "."
+        "ancillary_copying_base": ".",
+        "destinations_base": "."
     },
-    "backup_folders": {
-        "origin": {
-            "path": "origin/", 
-            "path_type": "relative",
-            "destinations": [
-                "dest1",
-                "dest2",
-                "dest3",
-                "dest4"
+    "origin": {
+        "path": "origin/", 
+        "path_type": "relative",
+        "destinations":[
+            {"path": "dest1", "path_type": "relative"},
+            {"path": "dest2", "path_type": "relative"},
+            {"path": "dest3", "path_type": "relative"},
+            {"path": "dest4", "path_type": "relative"}
             ]
-        },
-        "other_copying": [
-            {
-               "src_path": "other_origin/", 
-               "src_path_type": "relative",
-               "dest_path": "other_folder/", 
-               "dest_path_type": "relative" 
-            },
-            {
-               "src_path": "other_origin/", 
-               "src_path_type": "relative",
-               "dest_path": "other_folder/", 
-               "dest_path_type": "relative" 
-            }
-        ],
-        "rsync_args": [ {"rsync_vars": "-auv"}, {"rsync_delete": "--delete-after"}, {"backup_script": "--write-batch=backupscript"}]
-    }
+    },
+    "ancillary_copying": [
+        {
+           "src_path": "other_origin/", 
+           "src_path_type": "relative",
+           "dest_path": "other_folder/", 
+           "dest_path_type": "relative" 
+        }
+    ],
+    "rsync_args": [ 
+    {"rsync_vars": "-auv"}, 
+    {"rsync_delete": "--delete-after"}, 
+    {"backup_script": "--write-batch=backupscript"}
+    ]
 }
