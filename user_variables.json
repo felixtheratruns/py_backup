@@ -11,17 +11,17 @@
         "path": "origin/", 
         "path_type": "relative",
         "destinations":[
-            {"path": "dest1", "path_type": "relative"},
-            {"path": "dest2", "path_type": "relative"},
-            {"path": "dest3", "path_type": "relative"},
-            {"path": "dest4", "path_type": "relative"}
-            ]
+            {"path": "testdest1", "path_type": "relative"},
+            {"path": "testdest2", "path_type": "relative"},
+            {"path": "testdest3", "path_type": "relative"},
+            {"path": "testdest4", "path_type": "relative"}
+        ]
     },
     "ancillary_copying": [
         {
            "src_path": "other_origin/", 
            "src_path_type": "relative",
-           "dest_path": "other_folder/", 
+           "dest_path": "origin/other_folder/", 
            "dest_path_type": "relative" 
         }
     ],

@@ -6,6 +6,12 @@ import subprocess
 from pathlib import Path
 import os
 import sys
+from src.node_path import NodePath
+import src.base 
+
+#maybe make the origin path, and destination path, and ancillary paths a class type that contains the information that will be passed to the des_it_exist function automatically
+
+
 
 def rproc(bashcommand):
     process = subprocess.Popen(bashcommand.split(), stdout=subprocess.PIPE)
@@ -39,12 +45,8 @@ def r_dict(i,data):
 def join_text_paths(first_path,second_path):
     first_path=os.path.abspath(first_path)
     return Path(os.path.join(first_path,second_path))
-
-def exit():
-    print('Exiting . . .')
-    sys.exit()
-    
-def does_it_exist(path,e_mess='(exists)',dne_mess="(doesn't exist)",file_mess="(is a file not a directory)"):
+   
+def does_it_exist(path,e_mess='(exists)',dne_mess="(WARNING: doesn't exist)",exit_on_dne=False,file_mess="(is a file not a directory)"):
     if type(path) is not type(Path('')):
         print('error object is not type Path, it is instead type:',path.__class__)
         exit()
@@ -54,7 +56,8 @@ def does_it_exist(path,e_mess='(exists)',dne_mess="(doesn't exist)",file_mess="(
         print('File: ',path,file_mess)
     else:
         print('Path: ',path,dne_mess)
-        exit()
+        if exit_on_dne:
+            exit()
  
 with open('user_variables.json') as data_file:    
     data = json.load(data_file)
@@ -71,8 +74,7 @@ def print_text_path_for_copy(path_type,path,base_path,invalid_mess):
         path=Path(path)
         does_it_exist(path)
     else:
-        print(invalid_mess)
-        sys.exit()
+        exit()
 
 print('Ancillary copying happens first.')
 for value in data['ancillary_copying']:
@@ -87,8 +89,6 @@ for value in data['ancillary_copying']:
     base_path=data['base_paths']['ancillary_copying_base']
     print_text_path_for_copy(path_type,path,base_path,'dest_path_type invalid')
     print('')
-
-
 
 #I am replacing this with two "print_text_path_for_copy" functions
 #    print('Will copy:')
@@ -116,43 +116,46 @@ for value in data['ancillary_copying']:
 
 print("")
 print("Then script will copy origin to destinations.")
-print('will copy')
+print('>Will copy')
 origin_path_type=data['origin']['path_type']
 origin_path=data['origin']['path']
 origin_base_path=data['base_paths']['origin_base']
-print_text_path_for_copy(destination_path_type,origin_path,origin_base_path,'destination_path_type invalid')
-
-
+print_text_path_for_copy(origin_path_type,origin_path,origin_base_path,'destination_path_type invalid')
+print('>to')
+destination_base_path=data['base_paths']['origin_base']
 for value in data['origin']['destinations']:
-    destination_path_type=data['origin']['path_type']
-    print('to')
+    destination_path_type=value['path_type']
+    destination_path=value['path']
+    print_text_path_for_copy(destination_path_type,destination_path,destination_base_path,'destination_path_type invalid')
+
+
     
 
-for value in data['origin']['destinations']['paths']:
-    #direct=os.path.join(base_path,value['src_path'])
-    #directory=Path(direct)
-    print('Will copy:')
-    if value == 'relative':
-        b_p=data['base_paths']['ancillary_copying_base']
-        directory = join_text_paths(b_p,value['src_path'])
-        does_it_exist(directory) 
-    elif value['src_path_type'] == 'absolute':
-        path=Path(value['src_path'])
-        does_it_exist(path)
-    else:
-        print('src_path_type invalid')
-        sys.exit()
-    print('to')
-    if value['dest_path_type'] == 'relative':
-        b_p=data['base_paths']['ancillary_copying_base']
-        directory = join_text_paths(b_p,value['dest_path'])
-        does_it_exist(directory,dne_mess="(doesn't exist, will be created)") 
-    elif value['dest_path_type'] == 'absolute':
-        path=Path(value['dest_path'])
-        does_it_exist(path,dne_mess="(doesn't exist, will be created)")
-    else:
-        print('dest_path_type invalid')
-        sys.exit()
+#for value in data['origin']['destinations']:
+#    #direct=os.path.join(base_path,value['src_path'])
+#    #directory=Path(direct)
+#    print('Will copy:')
+#    if value == 'relative':
+#        b_p=data['base_paths']['ancillary_copying_base']
+#        directory = join_text_paths(b_p,value['src_path'])
+#        does_it_exist(directory) 
+#    elif value['src_path_type'] == 'absolute':
+#        path=Path(value['src_path'])
+#        does_it_exist(path)
+#    else:
+#        print('src_path_type invalid')
+#        sys.exit()
+#    print('to')
+#    if value['dest_path_type'] == 'relative':
+#        b_p=data['base_paths']['ancillary_copying_base']
+#        directory = join_text_paths(b_p,value['dest_path'])
+#        does_it_exist(directory,dne_mess="(doesn't exist, will be created)") 
+#    elif value['dest_path_type'] == 'absolute':
+#        path=Path(value['dest_path'])
+#        does_it_exist(path,dne_mess="(doesn't exist, will be created)")
+#    else:
+#        print('dest_path_type invalid')
+#        sys.exit()
 
 
 
