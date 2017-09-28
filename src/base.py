@@ -1,5 +1,7 @@
+import sys
 
-def exit():
-    print('Exiting . . .')
+def exit(*args):
+    print('Exiting . . . because:')
+    print(*args)
     sys.exit()
  
