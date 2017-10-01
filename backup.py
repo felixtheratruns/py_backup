@@ -107,7 +107,7 @@ if __name__ == '__main__':
         node_type = 'destination'
         create_if_not_exist = False
         node_path2 = NPWrap(NodePath, destination_path_type, destination_path, destination_base_path, node_type, create_if_not_exist)
-    
+            
 
     
 

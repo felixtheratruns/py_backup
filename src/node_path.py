@@ -6,36 +6,34 @@ import os
 from inspect import currentframe, getframeinfo
 
 class NodeType(Enum):
-    unknown = 0
     source = 1
     destination = 2
     __str__ = lambda self: NodeType._value_to_str.get(self)
 
-# define after NodeType class
-NodeType.__new__ = lambda cls, value: (cls._str_to_value.get(value, NodeType.unknown)
-                                    if isinstance(value, str) else
+# define after Types class
+NodeType.__new__ = lambda cls, value: (cls._str_to_value.get(value)
+                                    if isinstance(value, str) and value in cls._str_to_value else
                                     super(NodeType, cls).__new__(cls, value))
+
 # define look-up table and its inverse
-NodeType._str_to_value = OrderedDict((('unknown',NodeType.unknown),
-                                    ('source', NodeType.source),
+NodeType._str_to_value = OrderedDict((('source', NodeType.source),
                                     ('destination', NodeType.destination),))
 NodeType._value_to_str = {val: key for key, val in NodeType._str_to_value.items()}
 NodeType._str_to_value = dict(NodeType._str_to_value) # convert to regular dict (optional)
 
 
 class PathType(Enum):
-    unknown = 0
     relative = 1
     absolute = 2
     __str__ = lambda self: PathType._value_to_str.get(self)
 
 # define after PathType class
-PathType.__new__ = lambda cls, value: (cls._str_to_value.get(value, PathType.unknown) 
-                                    if isinstance(value, str) else
+PathType.__new__ = lambda cls, value: (cls._str_to_value.get(value) 
+                                    if isinstance(value, str) and value in cls._str_to_value else
                                     super(PathType, cls).__new__(cls, value))
+
 # define look-up table and its inverse
-PathType._str_to_value = OrderedDict((('unknown', PathType.unknown),
-                                    ('relative', PathType.relative),
+PathType._str_to_value = OrderedDict((('relative', PathType.relative),
                                     ('absolute', PathType.absolute),))
 PathType._value_to_str = {val: key for key, val in PathType._str_to_value.items()}
 PathType._str_to_value = dict(PathType._str_to_value) # convert to regular dict (optional)
@@ -64,9 +62,6 @@ PathType._str_to_value = dict(PathType._str_to_value) # convert to regular dict 
 #        return type(self)(cls.value)
 
 class NodePath:
-#    def __init__(self, path, path_type):
-#        self.set_path(path)
-#        self.set_path_type(path_type)
     def __init__(self, path, path_type, node_type):
         self.set_path(path)
         self.set_path_type(path_type)
@@ -144,7 +139,7 @@ class NPWrap(object):
         else:
             print('Path: ',path,dne_mess)
             if exit_on_dne:
-                frameinfo = getframeinfo(currentframe()); print(frameinfo.filename, frameinfo.lineno); exit("path: '",path,"' is not dir or file, looks like it doesn't exist")
+               exit("path: '",path,"' is not dir or file, looks like it doesn't exist")
     def __getattr__(self,attr):
         orig_attr = self.wrapped_NodePath.__getattribute__(attr)
         if callable(orig_attr):
@@ -191,8 +186,6 @@ class NPWrap(object):
 #    import pickle  # demostrate picklability
 #    print(pickle.loads(pickle.dumps(PathType.absolute)) == PathType.absolute)  # -> True
 #
-
-
 #    np1 = NodePath(Path("/data"),PathType('relative'))
 #    np2 = NodePath(Path("/data"),PathType('absolute'))
 #    np3 = NodePath(Path("/data"),PathType('aoeuabsolute'))
