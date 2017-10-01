@@ -22,10 +22,36 @@ NodeType._value_to_str = {val: key for key, val in NodeType._str_to_value.items(
 NodeType._str_to_value = dict(NodeType._str_to_value) # convert to regular dict (optional)
 
 
+def does_it_exist(path, e_mess='(exists)', dne_mess="(WARNING: doesn't exist)", exit_on_dne=False, file_mess="(is a file not a directory)"):
+    if type(path) is not type(Path('')):
+        exit('error object is not type Path, it is instead type:',path.__class__)
+    if path.is_dir():
+        print('Directory: ',path,e_mess)  
+    elif path.is_file():
+        print('File: ',path,file_mess)
+    else:
+        print('Path: ',path,dne_mess)
+        if exit_on_dne:
+           exit("path: '",path,"' is not dir or file, looks like it doesn't exist")
+def join_paths(first_path,second_path):
+   first_path=os.path.abspath(first_path)
+   return Path(os.path.join(first_path,second_path))
+
+
+
 class PathType(Enum):
     relative = 1
     absolute = 2
     __str__ = lambda self: PathType._value_to_str.get(self)
+    def return_full_path(self,path,base_path,dne_mess):
+        if self.name == self.relative.name:
+            full_path = join_paths(base_path,path)
+            does_it_exist(full_path,dne_mess=dne_mess)
+        elif path_type.name == self.absolute.name:
+            does_it_exist(path,dne_mess=dne_mess)
+        else:    
+            exit(invalid_mess)
+        return full_path
 
 # define after PathType class
 PathType.__new__ = lambda cls, value: (cls._str_to_value.get(value) 
@@ -77,7 +103,7 @@ class NodePath:
         self.create_if_not_exist=cne
 
     def get_create_if_not_exist():
-        return self.create_if_not_existt
+        return self.create_if_not_exist
 
     def set_path_type(self, path_type):
         if isinstance(path_type, PathType):
@@ -112,34 +138,15 @@ class NPWrap(object):
         else:
             dne_mess="WARNING: does not exist"
 
-        path_type = PathType(path_type)
         path = Path(path)
         base_path=Path(base_path)
+        path_type = PathType(path_type)
+        full_path = path_type.return_full_path(path,base_path,dne_mess)
         node_type = NodeType(node_type)
-        if path_type.name == 'relative':
-            path = self.join_paths(base_path,path)
-            self.does_it_exist(path,dne_mess=dne_mess)
-        elif path_type.name == 'absolute':
-            self.does_it_exist(path,dne_mess=dne_mess)
-        else:    
-            exit(invalid_mess)
+        
         #fix order here:
 
-        self.wrapped_NodePath = wrapped_NodePath(path, path_type, node_type, create_if_not_exist)
-    def join_paths(self,first_path,second_path):
-       first_path=os.path.abspath(first_path)
-       return Path(os.path.join(first_path,second_path))
-    def does_it_exist(self, path, e_mess='(exists)', dne_mess="(WARNING: doesn't exist)", exit_on_dne=False, file_mess="(is a file not a directory)"):
-        if type(path) is not type(Path('')):
-            exit('error object is not type Path, it is instead type:',path.__class__)
-        if path.is_dir():
-            print('Directory: ',path,e_mess)  
-        elif path.is_file():
-            print('File: ',path,file_mess)
-        else:
-            print('Path: ',path,dne_mess)
-            if exit_on_dne:
-               exit("path: '",path,"' is not dir or file, looks like it doesn't exist")
+        self.wrapped_NodePath = wrapped_NodePath(full_path, path_type, node_type, create_if_not_exist)
     def __getattr__(self,attr):
         orig_attr = self.wrapped_NodePath.__getattribute__(attr)
         if callable(orig_attr):

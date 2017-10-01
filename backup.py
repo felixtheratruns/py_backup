@@ -10,12 +10,6 @@ from src.base import *
 
 #maybe make the origin path, and destination path, and ancillary paths a class type that contains the information that will be passed to the des_it_exist function automatically
 
-
-def rproc(bashcommand):
-    process = subprocess.Popen(bashcommand.split(), stdout=subprocess.PIPE)
-    output = process.communicate()[0]
-    return output 
-
 def value_list(x):
     if isinstance(x, dict):
         return True

@@ -1,6 +1,12 @@
-from src.base import 
+from src.base import *
 
+        
+def rproc(bashcommand):
+    process = subprocess.Popen(bashcommand.split(), stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    return output 
 
+ 
 class Copy:
     origins = []
     destinations = []
@@ -12,4 +18,4 @@ class Copy:
     def add_destination(NPWrap):
         destinations.append(NPWrap)
     def execute_copy():
-           
+          
