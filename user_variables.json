@@ -15,7 +15,8 @@
             {"path": "testdest2", "path_type": "relative"},
             {"path": "testdest3", "path_type": "relative"},
             {"path": "testdest4", "path_type": "relative"}
-        ]
+        ],
+        "use_batch": "True"
     },
     "ancillary_copying": [
         {
@@ -23,11 +24,33 @@
            "src_path_type": "relative",
            "dest_path": "origin/other_folder/", 
            "dest_path_type": "relative" 
-        }
+        },
+        "use_batch": "False"
     ],
-    "rsync_args": [ 
-    {"rsync_vars": "-auv"}, 
-    {"rsync_delete": "--delete-after"}, 
-    {"backup_script": "--write-batch=backupscript"}
-    ]
-}
+    {"commands": 
+        [  
+            {"rsync_command": "rsync",
+            "arguments": 
+                [
+                "flags": "-auv", 
+                "delete_after": "--delete-after", 
+                "write_batch": "--write-batch=batch"
+                ],
+            "symbolic_arguments":
+                [   
+                "source",
+                "destination"
+                ]
+            }, 
+            {"batch_command": "bash", 
+                "arguments":
+                    [
+                    "batch.sh"
+                    ],
+                "symbolic_arguments":
+                    [
+                    "destination"
+                    ]    
+            }
+        ]
+     }

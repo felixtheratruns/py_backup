@@ -41,7 +41,15 @@ if __name__ == '__main__':
     #print(pretty(data));
     #print(data['backup_folders']['sub_copying'])
 
+    use_batch = data["origin"]["destinations"]["use_batch"]
+    rsync_vars = data["rsync_args"]["rsync_vars"]
+    rsync_delete = data["rsync_args"]["rsync_delete"]
+    write_batch = data["rsync_args"]["write_batch"]
+    command = data["rsync_args"]["command"]
+
+
     print('Ancillary copying happens first.')
+    anci_copy = Copy 
     for value in data['ancillary_copying']:
         print(">Will copy")
         path_type=value['src_path_type']
@@ -102,6 +110,7 @@ if __name__ == '__main__':
         create_if_not_exist = False
         node_path2 = NPWrap(NodePath, destination_path_type, destination_path, destination_base_path, node_type, create_if_not_exist)
             
+
 
     
 

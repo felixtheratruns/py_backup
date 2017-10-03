@@ -38,7 +38,6 @@ def join_paths(first_path,second_path):
    return Path(os.path.join(first_path,second_path))
 
 
-
 class PathType(Enum):
     relative = 1
     absolute = 2

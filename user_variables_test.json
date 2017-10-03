@@ -1,0 +1,91 @@
+{
+    "copy": 
+    {
+        "nodes":
+        [
+            "ancillary_copying": 
+            { 
+                "sources": 
+                [
+                    {"path": "other_origin/", "path_type": "relative"}
+                ],
+                "destinations":
+                [
+                    {"path": "origin/other_folder/", "path_type": "relative"} 
+                ],
+                "use_batch": "False",
+                "sourc_base_path": "."
+            },
+            "main": 
+            {
+                "sources": 
+                [
+                    {"path": "origin/", "path_type": "relative" }
+                ],
+                "destinations":
+                [
+                    {"path": "testdest1", "path_type": "relative"},
+                    {"path": "testdest2", "path_type": "relative"},
+                    {"path": "testdest3", "path_type": "relative"},
+                    {"path": "testdest4", "path_type": "relative"}
+                ],
+                "use_batch": "True"
+            }
+        ],
+        "base_paths": 
+        {
+            "origin_base": ".",
+            "ancillary_copying_base": ".",
+            "destinations_base": "."
+        }
+    },
+
+
+
+    "base_paths": {
+        "origin_base": ".",
+        "ancillary_copying_base": ".",
+        "destinations_base": "."
+    },
+    "origin": {
+        "path": "origin/", 
+        "path_type": "relative",
+        "destinations":[
+            {"path": "testdest1", "path_type": "relative"},
+            {"path": "testdest2", "path_type": "relative"},
+            {"path": "testdest3", "path_type": "relative"},
+            {"path": "testdest4", "path_type": "relative"}
+        ],
+        "use_batch": "True"
+    },
+    {"commands": 
+        [  
+            {"rsync_command": "rsync",
+            "arguments": 
+                [
+                "flags": "-auv", 
+                "delete_after": "--delete-after", 
+                "write_batch": "--write-batch=batch"
+                ],
+            "symbolic_arguments":
+                [   
+                "source",
+                "destination"
+                ]
+            }, 
+            {"batch_command": "bash", 
+                "arguments":
+                    [
+                    "batch.sh"
+                    ],
+                "symbolic_arguments":
+                    [
+                    "destination"
+                    ]    
+            }
+        ]
+     },
+    "remove": {
+        "regex": "s/[:|?\"]//g"
+     }
+
