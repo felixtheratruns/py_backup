@@ -33,13 +33,39 @@ def value_list(x):
 #        pretty.pprint(val_p)
 #        r_dict(i+12,data[key])    
 
+def ixi_th(data,key):
+    #stands for "if exist then" set value
+    if key in data:
+        return data[key]
+    else:
+        return None
+
+
+
 if __name__ == '__main__':
 
     full_path = os.path.realpath(__file__)
-    with open( os.path.dirname(full_path) + '/user_variables.json') as data_file:    
+    with open( os.path.dirname(full_path) + '/user_variables_test.json') as data_file:    
         data = json.load(data_file)
     #print(pretty(data));
     #print(data['backup_folders']['sub_copying'])
+
+    nodes = data["copy"]["nodes"]    
+
+ 
+
+
+    for node in nodes:
+        sources=node["sources"]
+        destinations=node["destinations"]
+        command_order=node["command_order"]
+        command_modify=ixi_th(node,"command_modify")
+        command=ixi_th(command_modify,"command")
+        command_switch_to=ixi_th(command_modify,"command_switch_to")
+        at_destination_iteration=ixi_th(command_modify,"at_destination_on_iteration")
+            
+    exit()
+
 
     use_batch = data["origin"]["destinations"]["use_batch"]
     rsync_vars = data["rsync_args"]["rsync_vars"]

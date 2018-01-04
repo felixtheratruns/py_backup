@@ -3,8 +3,8 @@
     {
         "nodes":
         [
-            "ancillary_copying": 
             { 
+                "name": "ancillary_copying",
                 "sources": 
                 [
                     {"path": "other_origin/", "path_type": "relative"}
@@ -13,12 +13,16 @@
                 [
                     {"path": "origin/other_folder/", "path_type": "relative"} 
                 ],
+                "command_order":
+                [
+                    "rsync"    
+                ],
                 "use_batch": "False",
                 "source_base_path": ".",
                 "destination_base_path": "."
             },
-            "main": 
             {
+                "name": "main", 
                 "sources": 
                 [
                     {"path": "origin/", "path_type": "relative" }
@@ -36,9 +40,10 @@
                     "rsync"
                 ],                
                 "command_modify": 
-                {
-                    "command": "rsync", "command_switch_to": "batch", "at_destination_iteration": 2
-                },
+                [
+                    {"command": "rsync", "command_switch_to": "batch", "at_destination_number": 2}
+                    
+                ],
                 "use_batch": "True",
                 "source_base_path": ".",
                 "destination_base_path": "."
@@ -49,26 +54,30 @@
     {  
         "rsync": 
         {"command": "rsync",
-        "arguments": 
-        {
-            "regular_arguments": 
-            [
-                "flags": "-auv", 
-                "delete_after": "--delete-after", 
-                "write_batch": "--write-batch=batch"
-            ],
-            "symbolic_arguments":
-            [   
-                "source",
-                "destination"
-            ],
-            "argument_order": 
-            [
-                "regular_arguments", "symbolic_arguments"                 
-            ]
+            "arguments": 
+            {
+                "regular_arguments": 
+                [
+                    {"flags": "-auv"},
+                    {"delete_after": "--delete-after"},
+                    {"write_batch": "--write-batch=batch"}
+                ],
+                "symbolic_arguments":
+                [   
+                    "source",
+                    "destination"
+                ],
+                "argument_order": 
+                [
+                    "regular_arguments", "symbolic_arguments"                 
+                ]
+            },
+            "default_behavior": {
+                "if_multiple_sources": {"delete_after": "turn_off", "for": "all"}
+            }
         },
         "batch": 
-        {"command": "batch", 
+        {"command": "bash", 
             "arguments":
             {
                 "regular_arguments":
