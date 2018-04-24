@@ -17,6 +17,10 @@
                 [
                     "rsync"    
                 ],
+                "command_modify": 
+                [
+                    {"command": "rsync", "command_switch_to": "batch", "at_destination_number": 2}
+                ],
                 "use_batch": "False",
                 "source_base_path": ".",
                 "destination_base_path": "."
@@ -42,7 +46,6 @@
                 "command_modify": 
                 [
                     {"command": "rsync", "command_switch_to": "batch", "at_destination_number": 2}
-                    
                 ],
                 "use_batch": "True",
                 "source_base_path": ".",
@@ -94,8 +97,8 @@
                 "regular_arguments", "symbolic_arguments"                 
             ]
         }
-     },
+    },
     "remove": {
         "regex": "s/[:|?\"]//g"
     }
-}
+}   
