@@ -64,7 +64,7 @@ if __name__ == '__main__':
         command_switch_to=ixi_th(command_modify,"command_switch_to")
         at_destination_iteration=ixi_th(command_modify,"at_destination_on_iteration")
             
-    exit()
+    #exit()
 
 
     use_batch = data["origin"]["destinations"]["use_batch"]
@@ -121,15 +121,15 @@ if __name__ == '__main__':
     print("")
     print("Then script will copy origin to destinations.")
     print('>Will copy')
-    origin_path_type=data['origin']['path_type']
-    origin_path=data['origin']['path']
+    origin_path_type=data['main']['path_type']
+    origin_path=data['main']['path']
     origin_base_path=data['base_paths']['origin_base']
     node_type = 'source'
     create_if_not_exist = False
     node_path1 = NPWrap(NodePath, origin_path_type, origin_path, origin_base_path, node_type, create_if_not_exist)
     print('>to')
     destination_base_path=data['base_paths']['origin_base']
-    for value in data['origin']['destinations']:
+    for value in data['main']['destinations']:
         destination_path_type=value['path_type']
         destination_path=value['path']
         node_type = 'destination'
